@@ -1,2 +1,3 @@
-# Renny
-A discord bot that plays music in voice channel, with more functionalities adding soon...
+# Reny
+
+A Discord bot that plays music in a voice channel, and much more functions will be added soon.
