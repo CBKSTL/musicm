@@ -2,7 +2,7 @@
 
 A Discord bot that plays music in a voice channel, and much more functions will be added soon.
 
-# **Packages**
+# **Requirements**
 To install the packages needed for this bot, run the following:
 ```
 pip install -r requirements.txt
