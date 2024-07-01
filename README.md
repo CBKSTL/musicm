@@ -2,7 +2,7 @@
 
 A Discord bot that plays music in a voice channel, and much more functions will be added soon.
 
-**Packages**
+# **Packages**
 To install the packages needed for this bot, run the following:
 ```
 pip install -r requirements.txt
@@ -13,5 +13,5 @@ https://www.ffmpeg.org/download.html
 For non-Window users, it is possible that the bot fails to work due to Opus not loaded, in that case, please install Opus:
 https://opus-codec.org/downloads/
 
-**Running the bot**
+# **Running the bot**
 Change the token in Launcher.py, run it and have fun.
