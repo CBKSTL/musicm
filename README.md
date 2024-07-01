@@ -14,4 +14,4 @@ For non-Window users, it is possible that the bot fails to work due to Opus not 
 https://opus-codec.org/downloads/
 
 # **Running the bot**
-Change the token in Launcher.py, run it and have fun.
+Replace the token in Launcher.py with the token of you bot, now you can run it and have fun.
