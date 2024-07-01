@@ -93,15 +93,17 @@ class Music(commands.Cog):
     async def playSong(self,ctx,song:s.Song):
         embed=discord.Embed(description=f"**Now playing:** [{song.title}]({song.videolink})  `[{song.duration}]`", color=c1)
         await ctx.send(embed=embed)
+
         # if not discord.opus.is_loaded():
         #     discord.opus.libopus_loader('/usr/local/lib/libopus.dylib')
-        #for non-Window platforms
+        #   for non-Window platforms
+        
         try:
             source = discord.FFmpegPCMAudio(song.audio, **ffmpegopts)
             ctx.voice_client.play(source)
         except:
             embed=discord.Embed(description=f"Error occured while playing, please try again...", color=c2)
-            
+            await ctx.send(embed=embed)
 
 
 
@@ -130,6 +132,7 @@ class Music(commands.Cog):
             voice_channel = ctx.author.voice.channel
             await voice_channel.connect()
             ctx.voice_client.stop()
+            self.client.loop.create_task(self.autoLeave(ctx))
         #Join a voice channel
 
         if ctx.voice_client.channel == ctx.author.voice.channel:
@@ -147,7 +150,6 @@ class Music(commands.Cog):
 
             if not botInfo['monitor']:
                 self.client.loop.create_task(self.musicMonitor(ctx))
-                self.client.loop.create_task(self.autoLeave(ctx))
                 botInfo['monitor'] = True
 
         else:
