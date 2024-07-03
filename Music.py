@@ -113,13 +113,7 @@ class Music(commands.Cog):
         self.reset()
 
 
-    @commands.command(name='Ping')
-    async def _ping(self,ctx):
-        embed=discord.Embed(description=f'`{int(self.client.latency*1000)}` **ms**', color=c1)
-        await ctx.send(embed=embed)
-
-
-    @commands.command(name='Play', aliases=['pl', 'p'])
+    @commands.command(name='Play', aliases=['pl', 'p'], description="Plays audio from the provided URL if the website is supported. If argument is not an URL, the bot will lookup through Youtube.")
     async def _play(self,ctx, *, url):
         global botInfo
 
@@ -157,39 +151,7 @@ class Music(commands.Cog):
             await ctx.send(embed=embed)
 
 
-    @commands.command(name='LoopSong', aliases=['lps', 'lpsong', 'ls', 'loop'])
-    async def _loopsong(self,ctx):
-        global botInfo
-        if botInfo['loopSong']:
-            botInfo['loopSong'] = False
-            embed=discord.Embed(description=f"Loop Song: **DISABLED**", color=c1)
-            await ctx.send(embed=embed)
-        else:
-            botInfo['loopSong'] = True
-            embed=discord.Embed(description=f"Loop Song: **ENABLED**", color=c1)
-            await ctx.send(embed=embed)
-
-        if botInfo['loopQueue']:
-            botInfo['loopQueue'] = False
-
-
-    @commands.command(name='LoopQueue', aliases=['lpq', 'lpqueue', 'lq'])
-    async def _loopqueue(self,ctx):
-        global botInfo
-        if botInfo['loopQueue']:
-            botInfo['loopQueue'] = False
-            embed=discord.Embed(description=f"Loop Queue: **DISABLED**", color=c1)
-            await ctx.send(embed=embed)
-        else:
-            botInfo['loopQueue'] = True
-            embed=discord.Embed(description=f"Loop Queue: **ENABLED**", color=c1)
-            await ctx.send(embed=embed)
-
-        if botInfo['loopSong']:
-            botInfo['loopSong'] = False
-
-
-    @commands.command(name='Queue', aliases=['q','playlist'])
+    @commands.command(name='Queue', aliases=['q','playlist'], description="Shows the list of queued songs.")
     async def _queue(self, ctx, page=1):
         global botInfo
         songQueue = botInfo['songQueue']
@@ -223,7 +185,7 @@ class Music(commands.Cog):
         await ctx.send(embed=embed)
         
             
-    @commands.command(name='Leave', aliases=['disconnect','dc'])
+    @commands.command(name='Leave', aliases=['disconnect','dc'], description="Disconnect from the current voice channel.")
     async def _leave(self, ctx):
         ctx.voice_client.stop()
         await ctx.voice_client.disconnect()
@@ -232,7 +194,7 @@ class Music(commands.Cog):
         await ctx.send(embed=embed)
 
 
-    @commands.command(name='Pause')
+    @commands.command(name='Pause', description="Pause the music.")
     async def _pause(self, ctx):
         global botInfo
         if ctx.voice_client.is_playing() == True:
@@ -245,23 +207,27 @@ class Music(commands.Cog):
             await ctx.send(embed=embed)
 
 
-    @commands.command(name='Resume', aliases=['rs'])
+    @commands.command(name='Resume', aliases=['rs'], description="Resume the music.")
     async def _resume(self, ctx):
         global botInfo
         if botInfo['botPaused'] == True:
             ctx.voice_client.resume()
-            embed=discord.Embed(description=f"**Resuming music...** ▶️", color=c1)
+            botInfo['botPaused'] == False
+            embed=discord.Embed(description=f"Resuming music... ▶️", color=c1)
+            await ctx.send(embed=embed)
+        else:
+            embed=discord.Embed(description=f"The bot is not paused...", color=c2)
             await ctx.send(embed=embed)
 
 
-    @commands.command(name='Skip', aliases=['next', 'fs'])
+    @commands.command(name='Skip', aliases=['next', 'fs'], description="Skip the current song.")
     async def _skip(self, ctx):
         global botInfo
         ctx.voice_client.stop()
         embed=discord.Embed(description=f"Song skipped", color=c1)
         await ctx.send(embed=embed)
 
-    @commands.command(name='Remove', aliases=['delete','rm','dl'])
+    @commands.command(name='Remove', aliases=['delete','rm','dl'], description="Remove a song from the queue.")
     async def _remove(self,ctx,position:int):
         global botInfo
         songQueue = botInfo['songQueue']
@@ -276,7 +242,7 @@ class Music(commands.Cog):
                 embed=discord.Embed(description=f"Invalid index...", color=c2)
                 await ctx.send(embed=embed)
 
-    @commands.command(name='Jump', aliases = ['j'])
+    @commands.command(name='Jump', aliases = ['j'], description="Jump to the targeted song.")
     async def _jump(self,ctx,position:int):
         global botInfo
         songQueue = botInfo['songQueue']
@@ -293,7 +259,39 @@ class Music(commands.Cog):
             embed=discord.Embed(description=f"Invalid index...", color=c2)
             await ctx.send(embed=embed)
 
-    @commands.command(name='SongInfo',aliases=['si','songinformation','np','nowplaying'])
+    @commands.command(name='LoopSong', aliases=['lps', 'lpsong', 'ls', 'loop'], description="Enable/disable loop song.")
+    async def _loopsong(self,ctx):
+        global botInfo
+        if botInfo['loopSong']:
+            botInfo['loopSong'] = False
+            embed=discord.Embed(description=f"Loop Song: **DISABLED**", color=c1)
+            await ctx.send(embed=embed)
+        else:
+            botInfo['loopSong'] = True
+            embed=discord.Embed(description=f"Loop Song: **ENABLED**", color=c1)
+            await ctx.send(embed=embed)
+
+        if botInfo['loopQueue']:
+            botInfo['loopQueue'] = False
+
+
+    @commands.command(name='LoopQueue', aliases=['lpq', 'lpqueue', 'lq'], description="Enable/disable loop queue")
+    async def _loopqueue(self,ctx):
+        global botInfo
+        if botInfo['loopQueue']:
+            botInfo['loopQueue'] = False
+            embed=discord.Embed(description=f"Loop Queue: **DISABLED**", color=c1)
+            await ctx.send(embed=embed)
+        else:
+            botInfo['loopQueue'] = True
+            embed=discord.Embed(description=f"Loop Queue: **ENABLED**", color=c1)
+            await ctx.send(embed=embed)
+
+        if botInfo['loopSong']:
+            botInfo['loopSong'] = False
+
+
+    @commands.command(name='SongInfo',aliases=['si','songinformation','np','nowplaying'], description="Show the information of the currently playing song.")
     async def _songInfo(self,ctx):
         global botInfo
         song = botInfo['currentSong']
@@ -316,6 +314,11 @@ class Music(commands.Cog):
             pass
         await ctx.send(embed=embed)
         
+
+    @commands.command(name='Ping', description="Shows the latency of the bot.")
+    async def _ping(self,ctx):
+        embed=discord.Embed(description=f'__{int(self.client.latency*1000)}__ ms', color=c1)
+        await ctx.send(embed=embed)
 
 async def setup(client):
     await client.add_cog(Music(client))
