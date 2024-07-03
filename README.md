@@ -2,11 +2,12 @@
 
 A Discord bot that plays music in a voice channel, and much more functions will be added soon.
 
-# **Packages**
-To install the packages needed for this bot, run the following:
+# **Requirements**
+Run the following command to install the required packages for this bot:
 ```
 pip install -r requirements.txt
 ```
+
 This bot relies on FFmpeg, install it and add it to the PATH:
 https://www.ffmpeg.org/download.html
 
