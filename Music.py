@@ -225,9 +225,9 @@ class Music(commands.Cog):
             if len(songQueue) >= position:
                 song = songQueue[position-1]
                 songQueue.remove(song)
-                await ctx.send(embed=discord.Embed(description=f"Song removed", color=c1))
             else:
                 await ctx.send(embed=discord.Embed(description=f"Invalid index...", color=c2))
+        await ctx.send(embed=discord.Embed(description=f"Song removed", color=c1))
 
     @commands.command(name='Jump', aliases = ['j'], description="Jump to the targeted song.")
     async def _jump(self,ctx,position:int):
