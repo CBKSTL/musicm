@@ -33,7 +33,9 @@ class Music(commands.Cog):
     async def autoLeave(self,ctx):
         idleTime = 0
         while True:
-
+            
+            if botInfo['monitor']:
+                break
             if ctx.voice_client is None:
                 self.reset()
                 break
@@ -66,6 +68,7 @@ class Music(commands.Cog):
             if not botInfo['botPaused'] and not ctx.voice_client.is_playing():
                 if len(songQueue) == 0:
                     botInfo['monitor'] = False
+                    self.client.loop.create_task(self.autoLeave(ctx))
                     break
                 if botInfo['loopQueue']:
                     playedSong = songQueue.pop(0)
@@ -73,6 +76,7 @@ class Music(commands.Cog):
                 elif not botInfo['loopSong'] and not botInfo['loopQueue']:
                     if len(songQueue) == 0:
                         botInfo['monitor'] = False
+                        self.client.loop.create_task(self.autoLeave(ctx))
                         break
                     if botInfo['currentSong'] is not None:
                         songQueue.remove(botInfo['currentSong'])
@@ -84,6 +88,7 @@ class Music(commands.Cog):
                     await self.playSong(ctx,botInfo['currentSong'])
                 except:
                     botInfo['monitor'] = False
+                    self.client.loop.create_task(self.autoLeave(ctx))
                     break
             #if bot finished playing, try play the next song in queue
             await asyncio.sleep(3)    
@@ -121,7 +126,6 @@ class Music(commands.Cog):
             voice_channel = ctx.author.voice.channel
             await voice_channel.connect()
             ctx.voice_client.stop()
-            self.client.loop.create_task(self.autoLeave(ctx))
         #Join a voice channel
 
         if ctx.voice_client.channel == ctx.author.voice.channel:
